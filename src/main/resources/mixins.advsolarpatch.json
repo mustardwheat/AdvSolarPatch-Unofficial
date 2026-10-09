@@ -1,0 +1,11 @@
+{
+    "required": true,
+    "package": "mods.su5ed.advsolarpatch.mixin",
+    "compatibilityLevel": "JAVA_8",
+    "minVersion": "0.8",
+    "target": "@env(DEFAULT)",
+    "mixins": [
+        "ConfigsMixin",
+        "TileEntitySolarPanelMixin"
+    ]
+}
