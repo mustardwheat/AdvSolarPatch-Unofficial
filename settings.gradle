@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        maven {
+            // RetroFuturaGradle 插件仓库
+            name 'GTNH Maven'
+            url 'https://nexus.gtnewhorizons.com/repository/public/'
+            mavenContent {
+                includeGroup 'com.gtnewhorizons'
+                includeGroup 'com.gtnewhorizons.retrofuturagradle'
+            }
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    // Java 工具链自动下载（编译用的 Azul JDK 8）
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+
+rootProject.name = 'AdvSolarPatch'
