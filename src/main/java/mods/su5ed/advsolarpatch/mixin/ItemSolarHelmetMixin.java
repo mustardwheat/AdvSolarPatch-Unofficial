@@ -45,12 +45,10 @@ public abstract class ItemSolarHelmetMixin implements IHazmatLike {
         HelmetHooks.onArmorTick(this.type, world, player, stack);
     }
 
-    // 目标类未覆写该方法，此处作为内在方法织入，形成对父类 Item 的覆盖
+    // 目标类未覆写该方法，此处作为内在方法织入，形成对父类 Item 的覆盖；三档头盔均显示发电信息
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-        if (this.type != ItemArmourSolarHelmet.SolarHelmetTypes.ADVANCED) {
-            tooltip.add(Localization.translate("advsolarpatch.helmet.genDay", this.type.dayEU));
-            tooltip.add(Localization.translate("advsolarpatch.helmet.genNight", this.type.nightEU));
-        }
+        tooltip.add(Localization.translate("advsolarpatch.helmet.genDay", this.type.dayEU));
+        tooltip.add(Localization.translate("advsolarpatch.helmet.genNight", this.type.nightEU));
     }
 }
