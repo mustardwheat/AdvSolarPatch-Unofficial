@@ -24,12 +24,6 @@ java {
     }
 }
 
-configurations {
-    // 打进产物 jar 的运行时依赖（当前为内嵌的 Mixin 0.8.5）
-    embed
-    implementation.extendsFrom(embed)
-}
-
 minecraft {
     mcVersion.set('1.12.2')
     mcpMappingChannel.set(project.property('mapping_channel').toString())
@@ -42,15 +36,16 @@ minecraft {
 }
 
 repositories {
+    // MixinBooter 仅发布在 CleanroomMC maven（本网络不可达）与 Modrinth maven，此处走 Modrinth
     exclusiveContent {
         forRepository {
             maven {
-                name 'SpongeMaven'
-                url 'https://repo.spongepowered.org/repository/maven-public/'
+                name 'Modrinth'
+                url 'https://api.modrinth.com/maven'
             }
         }
         filter {
-            includeGroup 'org.spongepowered'
+            includeGroup 'maven.modrinth'
         }
     }
 }
@@ -60,11 +55,14 @@ dependencies {
     implementation rfg.deobf(files('libs/industrialcraft-2-2.8.222-ex112.jar'))
     implementation rfg.deobf(files('libs/AdvancedSolarPanels-4.3.0.jar'))
 
-    // 1.12.2 没有官方 Mixin 前置，将 Mixin 0.8.5 内嵌进产物 jar，由 PatcherPlugin 自行引导；
-    // ASM 等传递依赖由 LaunchWrapper 在运行时提供（父类加载器优先），无需打入
-    embed('org.spongepowered:mixin:0.8.5') {
+    // Mixin 改由 MixinBooter（1.12.2 生态的事实标准前置，玩家环境普遍存在）提供，不再内嵌进产物 jar。
+    // enableMixins 返回 MixinBooter 携带的 Mixin 编译期坐标，并负责开发环境的 MixinBooter 加载与 refmap 生成
+    String mixin = modUtils.enableMixins('maven.modrinth:mixinbooter:10.2', 'mixins.advsolarpatch.refmap.json')
+    api (mixin) {
         transitive = false
     }
+    annotationProcessor 'org.ow2.asm:asm-debug-all:5.2'
+    annotationProcessor 'com.google.guava:guava:32.1.2-jre'
 }
 
 processResources {
@@ -85,16 +83,11 @@ jar {
                 'Implementation-Version': project.version,
                 'Implementation-Vendor': 'su5ed',
                 'Implementation-Timestamp': java.time.LocalDateTime.now().toString(),
-                'FMLCorePlugin': project.property('coremodPath')
+                // 仍需 coremod 入口承载 ClassTransformer（InvSlot 构造器描述符改写无法以 Mixin 表达）；
+                // Mixin 配置交由 MixinBooter 按 manifest 的 MixinConfigs 属性加载
+                'FMLCorePlugin': project.property('coremodPath'),
+                'MixinConfigs': 'mixins.advsolarpatch.json'
         )
-    }
-    // 将 embed 依赖并入产物 jar；排除签名文件与模块化元数据，避免 jar 签名校验冲突
-    from(provider { configurations.embed.collect { it.isDirectory() ? it : zipTree(it) } }) {
-        exclude 'META-INF/MANIFEST.MF'
-        exclude 'META-INF/*.SF'
-        exclude 'META-INF/*.DSA'
-        exclude 'META-INF/*.RSA'
-        exclude 'module-info.class'
     }
 }
 

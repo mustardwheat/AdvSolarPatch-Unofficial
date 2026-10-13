@@ -11,7 +11,7 @@
   "credits": "",
   "logoFile": "",
   "screenshots": [],
-  "requiredMods": [ "advanced_solar_panels" ],
-  "dependencies": [ "advanced_solar_panels@[4.3.0,)" ]
+  "requiredMods": [ "mixinbooter", "advanced_solar_panels" ],
+  "dependencies": [ "mixinbooter@[10.2,)", "advanced_solar_panels@[4.3.0,)" ]
 }
 ]
