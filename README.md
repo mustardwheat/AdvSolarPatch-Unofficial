@@ -1,10 +1,8 @@
 # AdvSolarPatch - Unofficial
 
-Unofficial maintenance fork of **[Su5eD's AdvSolarPatch](https://github.com/Su5eD/AdvSolarPatch)**
-for Minecraft 1.12.2. The mod is a runtime patcher for Chocohead's
-**Advanced Solar Panels 4.3.0** and additionally extends its solar helmets.
-The upstream repository is inactive; this fork continues maintenance and is
-developed alongside [Super-Solar-Panels-Unofficial](https://github.com/mustardwheat/Super-Solar-Panels-Unofficial).
+Fixes and extras for **Advanced Solar Panels 4.3.0** (Chocohead) on Minecraft
+1.12.2: crash fixes for modern IC2 builds, configurable solar panel output,
+and enhanced solar helmets.
 
 ## What it fixes
 
