@@ -3,6 +3,12 @@
 本文件按类别汇总 AdvSolarPatch-Unofficial（Su5eD AdvSolarPatch 的维护分支）的全部净变更，供发布说明使用。
 过程性回退已按最终状态对消，不在此列出。
 
+## 1.3.1（未发布）
+
+### 缺陷修复
+
+- 修复头盔日/夜发电信息仍显示原文键名的问题：1.12.2 的 LanguageManager 固定查询小写 lang/<语言>.lang，FML 仅对 pack_format=2 的资源包套用 LegacyV2Adapter 大小写兼容层，本模组资源包声明 format=3 不被包装，jar 内大写文件名（en_US.lang/zh_CN.lang）永远查询不到；现将语言文件改为小写（en_us.lang/zh_cn.lang），与 JEI 等模组的发货形态一致（10-14，5c9c24a）
+
 ## 1.3.0（未发布）
 
 ### 构建与加载机制
