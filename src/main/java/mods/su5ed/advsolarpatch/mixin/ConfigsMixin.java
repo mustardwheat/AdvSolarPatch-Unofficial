@@ -2,6 +2,7 @@ package mods.su5ed.advsolarpatch.mixin;
 
 import mods.su5ed.advsolarpatch.MaxOutputConfig;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -16,8 +17,13 @@ import java.io.File;
 @Mixin(targets = "com.chocohead.advsolar.Configs", remap = false)
 public abstract class ConfigsMixin {
 
+    /** 双石台阶物品已移除（见 ASPItemsMixin），其配方必须强制禁用，防止以空物品注册配方 */
+    @Shadow
+    private static boolean canCraftDoubleSlabs;
+
     @Inject(method = "loadConfig", at = @At("RETURN"))
     private static void advsolarpatch$loadMaxOutput(File config, boolean client, CallbackInfo ci) {
         MaxOutputConfig.load(config);
+        canCraftDoubleSlabs = false;
     }
 }
