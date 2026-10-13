@@ -17,6 +17,12 @@ public class PluginModContainer extends DummyModContainer {
     public PluginModContainer() {
         super(getModMetadata());
     }
+
+    // DummyModContainer 默认不绑定资源包，需显式提供，否则 assets/advsolarpatch 下的语言文件不会被加载
+    @Override
+    public Class<?> getCustomResourcePackClass() {
+        return ClasspathResourcePack.class;
+    }
     
     @Override
     public List<ArtifactVersion> getDependencies() {
