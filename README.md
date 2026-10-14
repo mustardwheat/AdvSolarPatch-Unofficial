@@ -1,77 +1,33 @@
-# AdvSolarPatch - Unofficial
+# AdvSolarPatch-Unofficial
 
-Fixes and extras for **Advanced Solar Panels 4.3.0** (Chocohead) on Minecraft
-1.12.2: crash fixes for modern IC2 builds, configurable solar panel output,
-and enhanced solar helmets.
+A patch and extension mod for Advanced Solar Panels 4.3.0 on Minecraft 1.12.2, forked from [Su5eD/AdvSolarPatch](https://github.com/Su5eD/AdvSolarPatch).
 
-## What it fixes
+## Fixes
 
-- Crashing of Advanced Solar Panels 4.3.0 with newer IC2 builds (2.8.191+),
-  caused by changed `InvSlot` family constructors. The patch rewrites the call
-  descriptors at runtime via Mixin:
+- Crashing with newer IC2 builds (2.8.191+):
   - `java.lang.NoSuchMethodError: ic2.core.block.invslot.InvSlotProcessable.<init>(Lic2/core/block/TileEntityInventory;Ljava/lang/String;ILic2/api/recipe/IMachineRecipeManager;)V`
   - `java.lang.NoSuchMethodError: ic2.core.block.invslot.InvSlotOutput.<init>(Lic2/core/block/TileEntityInventory;Ljava/lang/String;I)V`
   - `java.lang.NoSuchMethodError: ic2.core.block.invslot.InvSlot.<init>(Lic2/core/block/TileEntityInventory;Ljava/lang/String;Lic2/core/block/invslot/InvSlot$Access;ILic2/core/block/invslot/InvSlot$InvSide;)V`
-- Double Stone Slab duplicating adjacent blocks: the `advanced_solar_panels:double_stone_slab`
-  item and its recipe are removed entirely (upstream only patched the placement
-  logic). On first load of an old world, FML asks you to confirm the missing
-  registry entry; this is safe to accept.
+- Removes the `advanced_solar_panels:double_stone_slab` item and its recipe to prevent adjacent block duplication.
 
 ## Features
 
-- Configurable maximum output (EU/t) for the four ASP solar panels, via keys in
-  the `solars` category of the ASP config file:
-  - `AdvancedSPMaxOutput` (default 32)
-  - `HybrydSPMaxOutput` (default 128)
-  - `UltimateHSPMaxOutput` (default 512)
-  - `QuantumSPMaxOutput` (default 8192)
-- Hybrid and Ultimate Hybrid Solar Helmets implement IC2's `IHazmatLike`:
-  with charge remaining, they complete a four-piece radiation protection set
-  together with any quantum-family armor. The Advanced Solar Helmet is
-  intentionally excluded, matching its nano-family positioning.
-- Hybrid and Ultimate Hybrid Solar Helmets gain the quantum-helmet feature set:
-  clearing negative potion effects for an EU cost, automatically eating canned
-  food when hungry (1000 EU per use), and a night vision mode toggled with the
-  mode switch key (Alt by default). In bright light the mode simply disables
-  night vision instead of applying blindness.
-- All three solar helmets show their day/night generation in the item tooltip,
-  reading the live values from the solar panel configuration.
+- Configurable max output (EU/t) for the four solar panels in the `solars` category of the Advanced Solar Panels config file:
+  - `AdvancedSPMaxOutput` (default `32`)
+  - `HybrydSPMaxOutput` (default `128`)
+  - `UltimateHSPMaxOutput` (default `512`)
+  - `QuantumSPMaxOutput` (default `8192`)
+- Hybrid and Ultimate Hybrid Solar Helmets:
+  - Implement `IHazmatLike` for full-set radiation protection.
+  - Clear negative potion effects, auto-feed canned food, and toggle night vision without applying blindness in bright light.
+- Advanced, Hybrid, and Ultimate Hybrid Solar Helmets display day/night EU/t generation in their item tooltips.
 
-## Requirements
+## Dependencies
 
-| Mod | Version | Notes |
-|---|---|---|
-| Minecraft | 1.12.2 | Forge 14.23.5.2847 or newer |
-| IndustrialCraft 2 | 2.8.191 or newer | older IC2 builds do not need this mod |
-| Advanced Solar Panels (Chocohead) | 4.3.0 | the patch target |
-| MixinBooter | 10.2 or newer | present in most 1.12.2 modpacks |
+- IndustrialCraft 2 (2.8.191+)
+- Advanced Solar Panels (4.3.0)
+- MixinBooter (10.2+)
 
-## Building
+## License
 
-The build is driven by RetroFuturaGradle on Gradle 8.12 (migrated from the
-upstream ForgeGradle + Kotlin DSL setup). Use the included wrapper; no system
-Gradle installation is required.
-
-Prerequisites:
-
-- A JDK that can run Gradle 8.12 (Java 17 or newer) available on `JAVA_HOME`.
-  The compilation toolchain targets Java 8 and is provisioned automatically.
-
-Common tasks:
-
-| Task | Result |
-|---|---|
-| `gradlew build` | compiles and packages `build/libs/advsolarpatch-<version>.jar` |
-| `gradlew runClient` | starts a dev client with IC2 and Advanced Solar Panels |
-
-## Continuous integration
-
-- `build.yml` compiles the project and uploads the jar on every push and pull request.
-- `release.yml` builds and publishes a GitHub Release whenever a `v*` tag is pushed.
-
-## License & credits
-
-GPL-3.0, following the upstream repository.
-
-- Original AdvSolarPatch by **[Su5eD](https://github.com/Su5eD/AdvSolarPatch)**.
-- Advanced Solar Panels by Icedfire, SeNtiMeL and **Chocohead**.
+Licensed under [GPL-3.0](LICENSE).
